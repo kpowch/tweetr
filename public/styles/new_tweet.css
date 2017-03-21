@@ -21,7 +21,6 @@
 }
 
 .new-tweet input {
-  /*background-color: white;*/
   border: 1px solid #CACACA;
   background: linear-gradient( #E5E5E5, #F5F5F5);
   cursor: pointer;
@@ -33,4 +32,8 @@
   font-size: 12px;
   line-height: 29px;
   margin-right: 5px;
+}
+
+.new-tweet .too-long {
+  color: red;
 }
