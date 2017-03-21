@@ -1,0 +1,36 @@
+.new-tweet {
+  background-color: #EEEEEE;
+  border: 1px solid #CACACA;
+  border-radius: 5px;
+  margin: 0 2em;
+  padding: 10px;
+}
+
+.new-tweet h2 {
+  border-bottom: 1px solid black;
+  margin-top: 0;
+}
+
+.new-tweet textarea {
+  display: block;
+  border: 1px solid #ACACAC;
+  width: 100%;
+  max-width: 100%; /* so the text box expands downwards only */
+  margin-bottom: 5px;
+  padding: 5px
+}
+
+.new-tweet input {
+  /*background-color: white;*/
+  border: 1px solid #CACACA;
+  background: linear-gradient( #E5E5E5, #F5F5F5);
+  cursor: pointer;
+}
+
+.new-tweet span {
+  float: right;
+  font-style: italic;
+  font-size: 12px;
+  line-height: 29px;
+  margin-right: 5px;
+}
