@@ -1,3 +1,8 @@
+/*
+Adds the 'animation' of hovering over an old tweet post - i.e. change header
+opacity, show buttons, darker border, etc.
+*/
+
 // wait until html is loaded so js doesn't run until it has elements to act on
 $(document).ready(function() {
   $('.tweet').on('mouseenter', function() {

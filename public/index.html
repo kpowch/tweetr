@@ -3,32 +3,26 @@
   <head>
     <!-- Meta Information -->
     <title>Tweeter - Home Page</title>
+    <meta charset="utf-8">
     <!-- External CSS -->
     <link rel='stylesheet' href='/vendor/normalize-4.1.1.css' type='text/css' />
     <!-- Roboto Condensed google font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,700,700i' rel='stylesheet'>
-    <!-- App CSS -->
+    <!-- App, nav bar, new tweet, and individual tweet CSS -->
     <link rel='stylesheet' href='/styles/layout.css' type='text/css' />
-    <!-- nav bar CSS -->
     <link rel='stylesheet' href='/styles/nav.css' type='text/css' />
-    <!-- new tweet CSS -->
     <link rel='stylesheet' href='/styles/new_tweet.css' type='text/css' />
-    <!-- each individual tweet CSS -->
     <link rel='stylesheet' href='/styles/tweet.css' type='text/css' />
-    <!-- External JS -->
+    <!-- External, app, char counter, and hover animation JS -->
     <script type='text/javascript' src='/vendor/jquery-2.2.3.min.js'></script>
-    <!-- App JS -->
     <script type='text/javascript' src='/scripts/app.js'></script>
-    <!-- Script JS that calculated and changes tweet compose form char counter -->
     <script type='text/javascript' src='/scripts/composer_char_counter.js'></script>
-    <!-- Script JS that adds hover animation over individual tweets -->
     <script type='text/javascript' src='/scripts/tweet_hover.js'></script>
     <!-- Font awesome icons for tweet footer -->
     <script src="https://use.fontawesome.com/d76e3bcf8a.js"></script>
   </head>
 
   <body>
-
     <!-- Top nav bar (fixed) -->
     <nav id='nav-bar'>
       <img class='logo' src='/images/bird.png'>
@@ -37,6 +31,7 @@
 
     <!-- Page-specific (main) content here -->
     <main class='container'>
+      <!-- New tweet form -->
       <section class='new-tweet'>
         <h2>Compose Tweet</h2>
         <form method='POST' action='/tweets/'>
@@ -46,8 +41,8 @@
         </form>
       </section>
 
+      <!-- Old tweet posts (populated with tweets by the functions in app.js) -->
       <section id='tweets-container'>
-        <!-- this is populated with tweets by the functions in app.js -->
       </section>
     </main>
   </body>
