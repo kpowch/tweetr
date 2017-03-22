@@ -4,65 +4,39 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
-// Test / driver code (temporary).
-// TODO: Eventually will get this from the server.
-var data = [
-  {
-    "user": {
-      "name": "Newton",
-      "avatars": {
-        "small":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_50.png",
-        "regular": "https://vanillicon.com/788e533873e80d2002fa14e1412b4188.png",
-        "large":   "https://vanillicon.com/788e533873e80d2002fa14e1412b4188_200.png"
-      },
-      "handle": "@SirIsaac"
-    },
-    "content": {
-      "text": "If I have seen further it is by standing on the shoulders of giants"
-    },
-    "created_at": 1461116232227
-  },
-  {
-    "user": {
-      "name": "Descartes",
-      "avatars": {
-        "small":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_50.png",
-        "regular": "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc.png",
-        "large":   "https://vanillicon.com/7b89b0d8280b93e2ba68841436c0bebc_200.png"
-      },
-      "handle": "@rd" },
-    "content": {
-      "text": "Je pense , donc je suis"
-    },
-    "created_at": 1461113959088
-  },
-  {
-    "user": {
-      "name": "Johann von Goethe",
-      "avatars": {
-        "small":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_50.png",
-        "regular": "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1.png",
-        "large":   "https://vanillicon.com/d55cf8e18b47d4baaf60c006a0de39e1_200.png"
-      },
-      "handle": "@johann49"
-    },
-    "content": {
-      "text": "Es ist nichts schrecklicher als eine tätige Unwissenheit."
-    },
-    "created_at": 1461113796368
-  }
-];
+
+/*
+Adds the 'animation' of hovering over an old tweet post - i.e. change header
+opacity, show buttons, darker border, etc.
+*/
+function hoverAnimation() {
+  $('.tweet').on('mouseenter', function() {
+    // add hover class to article so border gets darker
+    $(this).addClass('hover');
+    // add hover class to header so it become less opaque
+    $(this).children('header').addClass('hover');
+    // show the icons
+    $(this).children('footer').children('.icons').show();
+  });
+
+  $('.tweet').on('mouseleave', function() {
+    $(this).removeClass('hover');
+    $(this).children('header').removeClass('hover');
+    // hide the icons
+    $(this).children('footer').children('.icons').hide();
+  });
+}
 
 /*
 Takes tweet object and reters a tweet <article> element containing the
 entire HTML structure of the tweet.
 */
-function createTweetElement(tweet) {
-  const avatar = tweet.user.avatars.small;
-  const name = tweet.user.name;
-  const handle = tweet.user.handle;
-  const contentText = tweet.content.text
-  const createdAt = tweet.created_at;
+function createTweetElement(tweetObject) {
+  const avatar = tweetObject.user.avatars.small;
+  const name = tweetObject.user.name;
+  const handle = tweetObject.user.handle;
+  const contentText = tweetObject.content.text
+  const createdAt = tweetObject.created_at;
 
   // TODO: split these up into variables like header, footer to modularize it
   // and make it look more readable
@@ -89,13 +63,56 @@ function createTweetElement(tweet) {
 Responsible for taking in an array of tweet objects and then appending each one
 to the #tweets-container, leveraging the createTweetElement function.
 */
-function renderTweets(tweets) {
-  tweets.forEach( function(element) {
-    let $tweet = createTweetElement(element);
-    $('#tweets-container').append($tweet);
+function renderTweets(tweetArray) {
+  tweetArray.forEach( function(tweetObject) {
+    let $tweet = createTweetElement(tweetObject);
+    $('#tweets-container').prepend($tweet); // appends it to front
   });
 }
 
+/*
+Responsible for fetching tweets from database using jQuery to make a request to
+/tweet. Receives the array of tweets as JSON
+*/
+// TODO handle the error?
+function loadTweets() {
+  $.ajax({
+    url: '/tweets',
+    method: 'GET'
+  }).done( function(allTweets) {
+    renderTweets(allTweets);
+    hoverAnimation();
+  }).fail( function(err) {
+    console.log('Error:', err)
+  });
+}
+
+/*
+This runs onces the html is loaded
+================================================================================
+*/
+// TODO handle the error in ajax post?
 $(document).ready(function() {
-  renderTweets(data);
+  loadTweets();
+
+  $("form[action='/tweets/']").on('submit', function(event) {
+    event.preventDefault(); // to prevent redirection to /tweets
+    $.ajax({
+      url: '/tweets',
+      method: 'POST',
+      data: $('.new-tweet textarea').serialize() // same as 'text: ($...).val()'
+    }).done( function(newTweet) {
+      $('.new-tweet textarea').removeClass('error');
+      $('.new-tweet textarea').val(''); // gets rid of text once submitted
+      $('.new-tweet textarea').focus(); // keeps cursor in textarea
+
+      // add new tweet to collection of tweets
+      renderTweets([newTweet]);
+      // add animation to old tweets when hovering
+      hoverAnimation();
+    }).fail(function(err) {
+      $('.new-tweet textarea').addClass('error');
+      console.log('Error:', err)
+    })
+  })
 });
