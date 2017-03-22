@@ -7,7 +7,7 @@
 }
 
 .new-tweet h2 {
-  border-bottom: 1px solid black;
+  border-bottom: 1px solid #244751;
   margin-top: 0;
 }
 
@@ -15,12 +15,13 @@
   display: block;
   border: 1px solid #ACACAC;
   width: 100%;
-  max-width: 100%; /* so the text box expands downwards only */
+  resize: none;
   margin-bottom: 5px;
   padding: 5px
 }
 
 .new-tweet input {
+  font-size: 24px;
   border: 1px solid #CACACA;
   background: linear-gradient( #E5E5E5, #F5F5F5);
   cursor: pointer;
