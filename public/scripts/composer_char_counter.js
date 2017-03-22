@@ -11,13 +11,16 @@ $(document).ready(function() {
     let charCount = maxLength - tweetLength;
 
     // change value of counter by traversing the form instead of explicitly using the counter class
-    $(this).parent().children('span').text(charCount)
+    $(this).parent().children('span.counter').text(charCount)
 
     // change color of counter to red if < 0
     if(charCount < 0) {
-      $(this).parent().children('span').addClass('too-long');
+      $(this).parent().children('span.counter').addClass('too-long');
+      $('.new-tweet .invalid-tweet').text('Tweet too long!').show();
+      $('.new-tweet textarea').focus();
     } else {
-      $(this).parent().children('span').removeClass('too-long');
+      $(this).parent().children('span.counter').removeClass('too-long');
+      $('.new-tweet .invalid-tweet').hide();
     }
   })
 });

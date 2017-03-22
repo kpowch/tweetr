@@ -11,19 +11,15 @@ opacity, show buttons, darker border, etc.
 */
 function hoverAnimation() {
   $('.tweet').on('mouseenter', function() {
-    // add hover class to article so border gets darker
-    $(this).addClass('hover');
-    // add hover class to header so it become less opaque
-    $(this).children('header').addClass('hover');
-    // show the icons
-    $(this).children('footer').children('.icons').show();
+    $(this).addClass('hover'); // add hover class to article so border gets darker
+    $(this).children('header').addClass('hover'); // add hover class to header so it become less opaque
+    $(this).children('footer').children('.icons').show(); // show the icons
   });
 
   $('.tweet').on('mouseleave', function() {
     $(this).removeClass('hover');
     $(this).children('header').removeClass('hover');
-    // hide the icons
-    $(this).children('footer').children('.icons').hide();
+    $(this).children('footer').children('.icons').hide(); // hide the icons
   });
 }
 
@@ -94,24 +90,34 @@ This runs onces the html is loaded
 // TODO handle the error in ajax post?
 $(document).ready(function() {
   loadTweets();
+  $('.new-tweet .invalid-tweet').hide();
 
   $("form[action='/tweets/']").on('submit', function(event) {
     event.preventDefault(); // to prevent redirection to /tweets
+    const $tweetTextarea = $('.new-tweet textarea');
+    const tweetText = $tweetTextarea.val();
+
+    if (tweetText.length == 0) {
+      $('.new-tweet .invalid-tweet').text('Tweet too short!').show();
+      $tweetTextarea.focus(); // keeps cursor in textarea
+      return;
+    } else if (tweetText.length > 140) {
+      // note: char counter handles error flash for count too long
+      $tweetTextarea.focus(); // keeps cursor in textarea
+      return;
+    }
+
+    $('.new-tweet .invalid-tweet').hide();
     $.ajax({
       url: '/tweets',
       method: 'POST',
-      data: $('.new-tweet textarea').serialize() // same as 'text: ($...).val()'
+      data: $tweetTextarea.serialize() // same as 'text: ($...).val()'
     }).done( function(newTweet) {
-      $('.new-tweet textarea').removeClass('error');
-      $('.new-tweet textarea').val(''); // gets rid of text once submitted
-      $('.new-tweet textarea').focus(); // keeps cursor in textarea
-
-      // add new tweet to collection of tweets
-      renderTweets([newTweet]);
-      // add animation to old tweets when hovering
-      hoverAnimation();
+      $tweetTextarea.val(''); // gets rid of text once submitted
+      $tweetTextarea.focus();
+      renderTweets([newTweet]); // add new tweet to collection of tweets
+      hoverAnimation(); // add animation to old tweets when hovering
     }).fail(function(err) {
-      $('.new-tweet textarea').addClass('error');
       console.log('Error:', err)
     })
   })
