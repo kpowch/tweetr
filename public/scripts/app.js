@@ -115,7 +115,8 @@ $(document).ready(function() {
     const $tweetTextarea = $('.new-tweet textarea');
     const tweetText = $tweetTextarea.val();
 
-    if (tweetText.length == 0) {
+    if (tweetText.trim().length === 0) {
+      console.log('too short')
       $('.new-tweet .invalid-tweet').text('Tweet too short!').show();
       $tweetTextarea.focus(); // keeps cursor in textarea
       return;
