@@ -10,32 +10,31 @@ MongoClient.connect(MONGODB_URI, (err, db) => {
   }
   console.log(`Connected to mongodb: ${MONGODB_URI}`);
 
-  db.collection('tweets').find().toArray((err, results) => {
-    if(err) throw err;
+  /*
+  Returns array of all tweets if all good (handles error
+  through callback parameter if not)
+  Note, alternatively the whole function could be:
+    db.collection("tweets").find().toArray(callback);
+  */
+  function getTweets(callback) {
+    db.collection('tweets').find().toArray((err, tweets) => {
+      if(err) {
+        return callback(err);
+      }
+      callback(null, tweets);
+    });
+  }
 
-    console.log('results array', results);
+
+  getTweets((err, tweets) => {
+    if (err) throw err;
+
+    console.log("Logging each tweet:");
+    for (let tweet of tweets) {
+      console.log(tweet);
+    }
 
     db.close();
-  })
+  });
 
-  // ==> long hand way of getting tweets
-  // Get all tweets
-  // db.collection('tweets').find({}, (err, results) => {
-  //   if(err) throw err;
-  //
-  //   // ==> this was an old way of itering the cursor.
-  //   // console.log('For each item yielded by the cursor:');
-  //   // results.each((err, item) => {
-  //   //   console.log(" ", item);
-  //   // })
-  //
-  //   results.toArray((err, resultsArray) => {
-  //     if(err) throw err;
-  //
-  //     console.log('resultsArray', resultsArray);
-  //   })
-  //
-  //   // ==> At the end, we close the connection:
-  //   db.close();
-  // })
 });
