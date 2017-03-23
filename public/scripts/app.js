@@ -31,7 +31,7 @@ function createTweetElement(tweetObject) {
   const avatar = tweetObject.user.avatars.small;
   const name = tweetObject.user.name;
   const handle = tweetObject.user.handle;
-  const contentText = tweetObject.content.text
+  const contentText = tweetObject.content.text;
   const createdAt = tweetObject.created_at;
   const timestamp = new Date(createdAt).toJSON();
 
@@ -49,12 +49,12 @@ function createTweetElement(tweetObject) {
 
   let $footer = $('<footer>')
     .append($('<time>').addClass('timeago').attr('datetime', timestamp))
-    .append($icons)
+    .append($icons);
 
   $tweet
     .append($header)
     .append($('<p>').text(contentText))
-    .append($footer)
+    .append($footer);
 
   return $tweet;
 }
@@ -84,7 +84,7 @@ function loadTweets() {
     renderTweets(allTweets);
     hoverAnimation();
   }).fail( function(err) {
-    console.log('Error:', err)
+    console.log('Error:', err);
   });
 }
 
@@ -137,7 +137,7 @@ $(document).ready(function() {
       renderTweets([newTweet]); // add new tweet to collection of tweets
       hoverAnimation(); // add animation to old tweets when hovering
     }).fail(function(err) {
-      console.log('Error:', err)
-    })
-  })
+      console.log('Error:', err);
+    });
+  });
 });
