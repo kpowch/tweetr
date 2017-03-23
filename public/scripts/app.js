@@ -132,6 +132,7 @@ $(document).ready(function() {
       data: $tweetTextarea.serialize() // same as 'text: ($...).val()'
     }).done( function(newTweet) {
       $tweetTextarea.val(''); // gets rid of text once submitted
+      $('.new-tweet span.counter').text(140); // restarts counter
       $tweetTextarea.focus();
       renderTweets([newTweet]); // add new tweet to collection of tweets
       hoverAnimation(); // add animation to old tweets when hovering
