@@ -10,13 +10,13 @@ Adds the 'animation' of hovering over an old tweet post - i.e. change header
 opacity, show buttons, darker border, etc.
 */
 function hoverAnimation() {
-  $('.tweet').on('mouseenter', function() {
+  $('article.tweet').on('mouseenter', function() {
     $(this).addClass('hover'); // add hover class to article so border gets darker
     $(this).children('header').addClass('hover'); // add hover class to header so it become less opaque
     $(this).children('footer').children('.icons').show(); // show the icons
   });
 
-  $('.tweet').on('mouseleave', function() {
+  $('article.tweet').on('mouseleave', function() {
     $(this).removeClass('hover');
     $(this).children('header').removeClass('hover');
     $(this).children('footer').children('.icons').hide(); // hide the icons
@@ -33,25 +33,29 @@ function createTweetElement(tweetObject) {
   const handle = tweetObject.user.handle;
   const contentText = tweetObject.content.text
   const createdAt = tweetObject.created_at;
+  const timestamp = new Date(createdAt).toJSON();
 
-  // TODO: split these up into variables like header, footer to modularize it
-  // and make it look more readable
-  let $tweet = $('<article>').addClass('tweet')
-    .append($('<header>')
-      .append($('<img>').attr('src', avatar))
-      .append($('<h2>').text(name))
-      .append($('<span>').text(handle))
-    )
-    .append($('<p>').text(contentText)
-    )
-    .append($('<footer>')
-      .append($('<span>').text(createdAt))
-      .append($('<div>').addClass('icons')
-        .append($('<i>').addClass('fa fa-heart').attr('aria-hidden', 'true'))
-        .append($('<i>').addClass('fa fa-retweet').attr('aria-hidden', 'true'))
-        .append($('<i>').addClass('fa fa-flag').attr('aria-hidden', 'true'))
-      )
-    )
+  let $tweet = $('<article>').addClass('tweet');
+
+  let $header = $('<header>')
+    .append($('<img>').attr('src', avatar))
+    .append($('<h2>').text(name))
+    .append($('<span>').text(handle));
+
+  let $icons = $('<div>').addClass('icons')
+    .append($('<i>').addClass('fa fa-heart').attr('aria-hidden', 'true'))
+    .append($('<i>').addClass('fa fa-retweet').attr('aria-hidden', 'true'))
+    .append($('<i>').addClass('fa fa-flag').attr('aria-hidden', 'true'));
+
+  let $footer = $('<footer>')
+    .append($('<time>').addClass('timeago').attr('datetime', timestamp))
+    .append($icons)
+
+  $tweet
+    .append($header)
+    .append($('<p>').text(contentText))
+    .append($footer)
+
   return $tweet;
 }
 
@@ -63,6 +67,7 @@ function renderTweets(tweetArray) {
   tweetArray.forEach( function(tweetObject) {
     let $tweet = createTweetElement(tweetObject);
     $('#tweets-container').prepend($tweet); // appends it to front
+    $("time.timeago").timeago();
   });
 }
 
@@ -92,21 +97,19 @@ $(document).ready(function() {
   loadTweets();
   $('.new-tweet .invalid-tweet').hide();
 
-  // ===========================================================================
+  // compose animation
   $('#nav-bar .compose').on('mouseenter', function() {
     $(this).addClass('hover');
   });
-
   $('#nav-bar .compose').on('mouseleave', function() {
     $(this).removeClass('hover');
   });
-
   $('#nav-bar .compose').on('click', function() {
     $('.new-tweet').slideToggle();
     $('.new-tweet textarea').focus();
   });
 
-  // ===========================================================================
+  // new tweet submit actions
   $("form[action='/tweets/']").on('submit', function(event) {
     event.preventDefault(); // to prevent redirection to /tweets
     const $tweetTextarea = $('.new-tweet textarea');

@@ -52,7 +52,7 @@
   overflow: auto;
 }
 
-.tweet footer span {
+.tweet footer time {
   font-size: 12px;
   float: left;
 }
