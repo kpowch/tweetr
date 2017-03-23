@@ -92,6 +92,21 @@ $(document).ready(function() {
   loadTweets();
   $('.new-tweet .invalid-tweet').hide();
 
+  // ===========================================================================
+  $('#nav-bar .compose').on('mouseenter', function() {
+    $(this).addClass('hover');
+  });
+
+  $('#nav-bar .compose').on('mouseleave', function() {
+    $(this).removeClass('hover');
+  });
+
+  $('#nav-bar .compose').on('click', function() {
+    $('.new-tweet').slideToggle();
+    $('.new-tweet textarea').focus();
+  });
+
+  // ===========================================================================
   $("form[action='/tweets/']").on('submit', function(event) {
     event.preventDefault(); // to prevent redirection to /tweets
     const $tweetTextarea = $('.new-tweet textarea');

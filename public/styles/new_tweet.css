@@ -5,6 +5,7 @@
   margin: 0 2em;
   padding: 10px;
   overflow: auto;
+  /*display: none;*/
 }
 
 .new-tweet h2 {

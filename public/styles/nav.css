@@ -4,8 +4,8 @@
   top: 0;
   right: 0;
   left: 0;
-  background-color: #00a087;
-  color: #e8fdff;
+  background-color: #00A087;
+  color: #E7FDFF;
   padding: 0 2em;
   z-index: 9000;
 }
@@ -17,8 +17,25 @@
 }
 
 #nav-bar .header {
-  font-size: 200%;
+  font-size: 32px;
   margin-left: 10px;
   float: left;
   line-height: 80px;
+}
+
+#nav-bar .compose {
+  float: right;
+  background-color: #E7FDFF;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 18px 10px;
+  font-size: 20px;
+  color: #00A087;
+  cursor: pointer;
+}
+
+#nav-bar .compose.hover {
+  background-color: #FFFFFF;
+  color: black;
 }
