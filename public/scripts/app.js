@@ -109,6 +109,14 @@ $(document).ready(function() {
     $('.new-tweet textarea').focus();
   });
 
+  // hummingbird animation when hovering over it
+  $('#nav-bar .logo').on('mouseenter', function() {
+    $(this).addClass('bounce');
+  })
+  $('#nav-bar .logo').on('mouseleave', function() {
+    $(this).removeClass('bounce');
+  })
+
   // new tweet submit actions
   $("form[action='/tweets/']").on('submit', function(event) {
     event.preventDefault(); // to prevent redirection to /tweets

@@ -1,0 +1,13 @@
+// This is the main SCSS document that combines all the other partials and gets
+// converted into the main.css file (which is imported by the html).
+
+$grey: #E7FDFF;
+$dark-grey: #CACACA;
+$green: #00A087;
+$dark-blue: #244751;
+$nav-bar-height: 80px;
+
+@import '_layout';
+@import '_nav';
+@import '_new_tweet';
+@import '_tweet';

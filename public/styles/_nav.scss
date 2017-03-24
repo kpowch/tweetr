@@ -1,0 +1,56 @@
+#nav-bar {
+  height: $nav-bar-height;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: $green;
+  color: $grey;
+  padding: 0 2em;
+  z-index: 9000;
+
+  .logo {
+    float: left;
+    height: $nav-bar-height;
+    width: $nav-bar-height;
+  }
+
+  .header {
+    float: left;
+    margin-left: 10px;
+    font-size: 32px;
+    line-height: $nav-bar-height;
+  }
+
+  .compose {
+    float: right;
+    background-color: $grey;
+    border: 1px solid $dark-blue;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 18px 10px;
+    font-size: 20px;
+    color: $green;
+    cursor: pointer;
+  }
+
+  .compose.hover {
+    background-color: #FFF;
+    color: $dark-blue;
+  }
+}
+
+@-webkit-keyframes thumb {
+	0% { -webkit-transform: scale(1); }
+	50% { -webkit-transform: scale(0.9); }
+	100% { -webkit-transform: scale(1); }
+}
+
+#nav-bar .logo.bounce
+{
+	-webkit-animation-name: thumb;
+	-webkit-animation-duration: 200ms;
+	-webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: 2;
+	-webkit-animation-timing-function: linear;
+}
