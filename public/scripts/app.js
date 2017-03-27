@@ -24,7 +24,7 @@ function handleLikeIncrementClicks(event) {
 function toggleNewTweet() {
   $('.new-tweet').slideToggle();
   $('.new-tweet textarea').focus();
-  document.body.scrollTop = 0; // scrolls the window to the top 
+  document.body.scrollTop = 0; // scrolls the window to the top
 }
 
 /*
@@ -33,7 +33,6 @@ entire HTML structure of the tweet.
 */
 function createTweetElement(tweetObject) {
   // Note: mongo adds an object id so we don't have to generate a new one per tweet
-  console.log(tweetObject)
   const id = tweetObject._id;
   const avatar = tweetObject.user.avatars.small;
   const name = tweetObject.user.name;
@@ -42,7 +41,6 @@ function createTweetElement(tweetObject) {
   const createdAt = tweetObject.created_at;
   const timestamp = new Date(createdAt).toJSON();
   const likeCount = !!tweetObject.isLiked ? 1 : 0;
-  console.log(likeCount)
 
   let $tweet = $('<article>').addClass('tweet').attr('data-id', id );
 
