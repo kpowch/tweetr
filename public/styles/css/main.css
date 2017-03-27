@@ -1,0 +1,182 @@
+/*
+ * http://www.paulirish.com/2012/box-sizing-border-box-ftw/
+ * https://css-tricks.com/international-box-sizing-awareness-day/
+ * Do not modify these two selectors, please
+ */
+html {
+  box-sizing: border-box; }
+
+*, *:before, *:after {
+  box-sizing: inherit; }
+
+body {
+  margin: 0;
+  color: #244751;
+  background-color: #EEE;
+  font-family: 'Roboto Condensed', sans-serif; }
+
+main {
+  max-width: 450px;
+  margin: 0 auto;
+  padding-top: 120px;
+  background-color: #FFF; }
+
+@-webkit-keyframes thumb {
+  0% {
+    -webkit-transform: scale(1);
+    -webkit-transform: rotate(0); }
+  50% {
+    -webkit-transform: scale(0.9);
+    -webkit-transform: rotate(-20deg); }
+  100% {
+    -webkit-transform: scale(1);
+    -webkit-transform: rotate(0); } }
+#nav-bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: #00A087;
+  color: #E7FDFF;
+  padding: 0 2em;
+  z-index: 9000; }
+  #nav-bar #nav-bar-wrapper {
+    max-width: 1000px;
+    height: 80px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 auto; }
+    #nav-bar #nav-bar-wrapper #logo-text-wrapper {
+      height: 100%;
+      display: flex;
+      align-items: center; }
+      #nav-bar #nav-bar-wrapper #logo-text-wrapper .logo {
+        height: 100%; }
+        #nav-bar #nav-bar-wrapper #logo-text-wrapper .logo:hover {
+          -webkit-animation-name: thumb;
+          -webkit-animation-duration: 200ms;
+          -webkit-transform-origin: 50% 50%;
+          -webkit-animation-iteration-count: 2;
+          -webkit-animation-timing-function: linear; }
+      #nav-bar #nav-bar-wrapper #logo-text-wrapper .header {
+        margin-left: 10px;
+        font-size: 32px; }
+    #nav-bar #nav-bar-wrapper .compose {
+      background-color: #E7FDFF;
+      border: 1px solid #244751;
+      border-radius: 5px;
+      padding: 18px 10px;
+      font-size: 20px;
+      color: #00A087;
+      cursor: pointer; }
+      #nav-bar #nav-bar-wrapper .compose:hover {
+        background-color: #FFF;
+        color: #244751; }
+  @media (max-width: 500px) {
+    #nav-bar #nav-bar-wrapper #logo-text-wrapper .logo {
+      height: 70%; }
+    #nav-bar #nav-bar-wrapper #logo-text-wrapper .header {
+      font-size: 24px; }
+    #nav-bar #nav-bar-wrapper .compose {
+      padding: 10px;
+      font-size: 16px; } }
+
+.new-tweet {
+  background-color: #EEE;
+  border: 1px solid #CACACA;
+  border-radius: 5px;
+  margin: 0 2em;
+  padding: 10px;
+  overflow: auto; }
+  .new-tweet h2 {
+    border-bottom: 1px solid #244751;
+    margin-top: 0; }
+  .new-tweet textarea {
+    display: block;
+    border: 1px solid #CACACA;
+    width: 100%;
+    resize: none;
+    margin-bottom: 5px;
+    padding: 5px; }
+  .new-tweet #new-tweet-subwrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    .new-tweet #new-tweet-subwrapper input {
+      color: #244751;
+      border: 1px solid #CACACA;
+      background: linear-gradient(#E5E5E5, #F5F5F5);
+      cursor: pointer; }
+      .new-tweet #new-tweet-subwrapper input:hover {
+        background-color: #FFF;
+        color: #244751; }
+    .new-tweet #new-tweet-subwrapper span.invalid-tweet {
+      color: tomato;
+      font-size: 12px;
+      padding-left: 10px;
+      display: none; }
+    .new-tweet #new-tweet-subwrapper span.counter {
+      font-style: italic;
+      font-size: 12px;
+      margin-right: 5px; }
+      .new-tweet #new-tweet-subwrapper span.counter.too-long {
+        color: tomato; }
+
+#tweets-container {
+  padding: 10px 0; }
+  #tweets-container .tweet {
+    border: 1px solid #CACACA;
+    border-radius: 5px;
+    margin: 10px 2em;
+    z-index: 1; }
+    #tweets-container .tweet header {
+      background-color: #EEE;
+      border-top-right-radius: 4px;
+      border-top-left-radius: 4px;
+      height: 70px;
+      padding: 10px;
+      opacity: 0.7; }
+      #tweets-container .tweet header img {
+        height: 100%;
+        float: left; }
+      #tweets-container .tweet header h2 {
+        display: inline;
+        float: left;
+        margin: 0 10px; }
+      #tweets-container .tweet header span {
+        font-size: 14px;
+        float: right;
+        margin: 0;
+        padding-top: 9px;
+        color: #858585; }
+    #tweets-container .tweet p {
+      padding: 20px;
+      word-wrap: break-word; }
+    #tweets-container .tweet footer {
+      border-top: 1px solid #EEE;
+      padding: 10px;
+      margin: 0;
+      overflow: auto; }
+      #tweets-container .tweet footer time {
+        font-size: 12px;
+        float: left; }
+      #tweets-container .tweet footer .icons {
+        float: right;
+        color: #00A087;
+        font-size: 12px;
+        display: none; }
+        #tweets-container .tweet footer .icons .fa {
+          padding: 0 10px; }
+        #tweets-container .tweet footer .icons .number {
+          font-size: 10px; }
+        #tweets-container .tweet footer .icons [data-count="0"] {
+          display: none; }
+    #tweets-container .tweet:hover {
+      border: 1px solid #244751; }
+      #tweets-container .tweet:hover header {
+        opacity: 1; }
+      #tweets-container .tweet:hover footer .icons {
+        display: block; }
+
+/*# sourceMappingURL=main.css.map */
