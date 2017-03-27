@@ -1,0 +1,56 @@
+.new-tweet {
+  background-color: #EEE;
+  border: 1px solid $dark-grey;
+  border-radius: 5px;
+  margin: 0 2em;
+  padding: 10px;
+  overflow: auto;
+
+  h2 {
+    border-bottom: 1px solid $dark-blue;
+    margin-top: 0;
+  }
+
+  textarea {
+    display: block;
+    border: 1px solid $dark-grey;
+    width: 100%;
+    resize: none;
+    margin-bottom: 5px;
+    padding: 5px;
+  }
+  #new-tweet-subwrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    input {
+      color: $dark-blue;
+      border: 1px solid $dark-grey;
+      background: linear-gradient(#E5E5E5, #F5F5F5);
+      cursor: pointer;
+
+      &:hover {
+        background-color: #FFF;
+        color: $dark-blue;
+      }
+    }
+
+    span.invalid-tweet {
+      color: tomato;
+      font-size: 12px;
+      padding-left: 10px;
+      display: none;
+    }
+
+    span.counter {
+      font-style: italic;
+      font-size: 12px;
+      margin-right: 5px;
+
+      &.too-long {
+        color: tomato;
+      }
+    }
+  }
+}

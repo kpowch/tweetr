@@ -4,23 +4,27 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
+function handleLikeIncrementClicks(event) {
+  const $tweetLikes = $(this).parents('.icons').children('.heart-number');
+  var tweetLikesNum = $tweetLikes.data('likes');
+  var tweetid = $(this).parents('article.tweet').data('id');
+  $.ajax({
+    url: `/tweets/${tweetid}/like`,
+    method: 'POST',
+    data: tweetLikesNum,
+  }).done(function (res) {
+    if(res.isLiked) {
+      $tweetLikes.text(1).attr('data-count', 1);
+    } else {
+      $tweetLikes.text(0).attr('data-count', 0);
+    }
+  })
+}
 
-/*
-Adds the 'animation' of hovering over an old tweet post - i.e. change header
-opacity, show buttons, darker border, etc.
-*/
-function hoverAnimation() {
-  $('article.tweet').on('mouseenter', function() {
-    $(this).addClass('hover'); // add hover class to article so border gets darker
-    $(this).children('header').addClass('hover'); // add hover class to header so it become less opaque
-    $(this).children('footer').children('.icons').show(); // show the icons
-  });
-
-  $('article.tweet').on('mouseleave', function() {
-    $(this).removeClass('hover');
-    $(this).children('header').removeClass('hover');
-    $(this).children('footer').children('.icons').hide(); // hide the icons
-  });
+function toggleNewTweet() {
+  $('.new-tweet').slideToggle();
+  $('.new-tweet textarea').focus();
+  document.body.scrollTop = 0; // scrolls the window to the top 
 }
 
 /*
@@ -28,24 +32,30 @@ Takes tweet object and reters a tweet <article> element containing the
 entire HTML structure of the tweet.
 */
 function createTweetElement(tweetObject) {
+  // Note: mongo adds an object id so we don't have to generate a new one per tweet
+  console.log(tweetObject)
+  const id = tweetObject._id;
   const avatar = tweetObject.user.avatars.small;
   const name = tweetObject.user.name;
   const handle = tweetObject.user.handle;
   const contentText = tweetObject.content.text;
   const createdAt = tweetObject.created_at;
   const timestamp = new Date(createdAt).toJSON();
+  const likeCount = !!tweetObject.isLiked ? 1 : 0;
+  console.log(likeCount)
 
-  let $tweet = $('<article>').addClass('tweet');
+  let $tweet = $('<article>').addClass('tweet').attr('data-id', id );
 
   let $header = $('<header>')
     .append($('<img>').attr('src', avatar))
     .append($('<h2>').text(name))
     .append($('<span>').text(handle));
 
-  let $icons = $('<div>').addClass('icons')
-    .append($('<i>').addClass('fa fa-heart').attr('aria-hidden', 'true'))
-    .append($('<i>').addClass('fa fa-retweet').attr('aria-hidden', 'true'))
-    .append($('<i>').addClass('fa fa-flag').attr('aria-hidden', 'true'));
+  let $icons = $('<div>').addClass('icons');
+  ['flag', 'retweet', 'heart'].forEach((icon) => {
+    $icons.append($('<i>').addClass('fa fa-' + icon).attr('aria-hidden', 'true'))
+          .append($('<span>').addClass(icon + '-number number').attr('data-count', 0).text(0));
+  })
 
   let $footer = $('<footer>')
     .append($('<time>').addClass('timeago').attr('datetime', timestamp))
@@ -55,6 +65,11 @@ function createTweetElement(tweetObject) {
     .append($header)
     .append($('<p>').text(contentText))
     .append($footer);
+
+  $tweet.find('.heart-number').text(likeCount).attr('data-count', likeCount);
+
+  // add even handle to 'heart' icon to enable likes
+  $tweet.find('.fa-heart').on('click', handleLikeIncrementClicks);
 
   return $tweet;
 }
@@ -82,40 +97,19 @@ function loadTweets() {
     method: 'GET'
   }).done( function(allTweets) {
     renderTweets(allTweets);
-    hoverAnimation();
   }).fail( function(err) {
     console.log('Error:', err);
   });
 }
 
 /*
-This runs onces the html is loaded
+This runs once the html is loaded
 ================================================================================
 */
 // TODO handle the error in ajax post?
 $(document).ready(function() {
   loadTweets();
   $('.new-tweet .invalid-tweet').hide();
-
-  // compose animation
-  $('#nav-bar .compose').on('mouseenter', function() {
-    $(this).addClass('hover');
-  });
-  $('#nav-bar .compose').on('mouseleave', function() {
-    $(this).removeClass('hover');
-  });
-  $('#nav-bar .compose').on('click', function() {
-    $('.new-tweet').slideToggle();
-    $('.new-tweet textarea').focus();
-  });
-
-  // hummingbird animation when hovering over it
-  $('#nav-bar .logo').on('mouseenter', function() {
-    $(this).addClass('bounce');
-  })
-  $('#nav-bar .logo').on('mouseleave', function() {
-    $(this).removeClass('bounce');
-  })
 
   // new tweet submit actions
   $("form[action='/tweets/']").on('submit', function(event) {
@@ -124,7 +118,6 @@ $(document).ready(function() {
     const tweetText = $tweetTextarea.val();
 
     if (tweetText.trim().length === 0) {
-      console.log('too short')
       $('.new-tweet .invalid-tweet').text('Tweet too short!').show();
       $tweetTextarea.focus(); // keeps cursor in textarea
       return;
@@ -144,9 +137,9 @@ $(document).ready(function() {
       $('.new-tweet span.counter').text(140); // restarts counter
       $tweetTextarea.focus();
       renderTweets([newTweet]); // add new tweet to collection of tweets
-      hoverAnimation(); // add animation to old tweets when hovering
     }).fail(function(err) {
       console.log('Error:', err);
     });
   });
+
 });
