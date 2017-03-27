@@ -4,12 +4,13 @@
     <!-- Meta Information -->
     <title>Tweeter - Home Page</title>
     <meta charset="utf-8">
+    <meta name='viewport' content='width=device-width initial-scale=1' />
     <!-- External CSS -->
     <link rel='stylesheet' href='/vendor/normalize-4.1.1.css' type='text/css' />
     <!-- Roboto Condensed google font -->
     <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,700,700i' rel='stylesheet'>
     <!-- Main CSS that links to SCSS partials -->
-    <link rel='stylesheet' href='/styles/main.css' type='text/css' />
+    <link rel='stylesheet' href='/styles/css/main.css' type='text/css' />
     <!-- External, app, char counter, and timeago JS -->
     <script type='text/javascript' src='/vendor/jquery-2.2.3.min.js'></script>
     <script type='text/javascript' src='/scripts/app.js'></script>
@@ -21,12 +22,16 @@
 
   <body>
     <!-- Top nav bar (fixed) -->
-    <nav data-color='yello' id='nav-bar'>
-      <img class='logo' src='/images/bird.png'>
-      <span class='header'>Tweeter</span>
-      <div class='compose'>
-        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-        <span>Compose</span>
+    <nav id='nav-bar'>
+      <div id='nav-bar-wrapper'>
+          <div id='logo-text-wrapper'>
+            <img class='logo' src='/images/bird.png'>
+            <span class='header'>Tweeter</span>
+          </div>
+          <div class='compose' onclick='toggleNewTweet()'>
+            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+            <span>Compose</span>
+          </div>
       </div>
     </nav>
 
@@ -37,9 +42,13 @@
         <h2>Compose Tweet</h2>
         <form method='POST' action='/tweets/'>
           <textarea name='text' placeholder='What are you humming about?'></textarea>
-          <input type='submit' value='Tweet'>
-          <span class='invalid-tweet'></span>
-          <span class='counter'>140</span>
+          <div id='new-tweet-subwrapper'>
+            <div>
+              <input type='submit' value='Tweet'>
+              <span class='invalid-tweet'></span>
+            </div>
+            <span class='counter'>140</span>
+          </div>
         </form>
       </section>
 
