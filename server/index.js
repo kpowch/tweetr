@@ -3,6 +3,7 @@
 require('dotenv').config();
 
 // Basic express setup:
+// NOTE: process.env.PORT is important for heroku deployment
 const PORT          = process.env.PORT || 8080;
 const express       = require("express");
 const bodyParser    = require("body-parser");

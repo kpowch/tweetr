@@ -4,42 +4,19 @@
  * Reminder: Use (and do all your DOM work in) jQuery's document ready function
  */
 
-function handleLikeIncrementClicks(event) {
-  const $tweetLikes = $(this).parents('.icons').children('.heart-number');
-  var tweetLikesNum = $tweetLikes.data('likes');
-  var tweetid = $(this).parents('article.tweet').data('id');
-  $.ajax({
-    url: `/tweets/${tweetid}/like`,
-    method: 'POST',
-    data: tweetLikesNum,
-  }).done(function (res) {
-    if(res.isLiked) {
-      $tweetLikes.text(1).attr('data-count', 1);
-    } else {
-      $tweetLikes.text(0).attr('data-count', 0);
-    }
-  })
-}
-
-function toggleNewTweet() {
-  $('.new-tweet').slideToggle();
-  $('.new-tweet textarea').focus();
-  document.body.scrollTop = 0; // scrolls the window to the top
-}
 
 /*
 Takes tweet object and reters a tweet <article> element containing the
 entire HTML structure of the tweet.
 */
 function createTweetElement(tweetObject) {
-  // Note: mongo adds an object id so we don't have to generate a new one per tweet
-  const id = tweetObject._id;
+  const id = tweetObject._id;   // Note: mongo adds an object id
   const avatar = tweetObject.user.avatars.small;
   const name = tweetObject.user.name;
   const handle = tweetObject.user.handle;
   const contentText = tweetObject.content.text;
   const createdAt = tweetObject.created_at;
-  const timestamp = new Date(createdAt).toJSON();
+  const timestamp = new Date(createdAt).toJSON(); // for timeago module
   const likeCount = !!tweetObject.isLiked ? 1 : 0;
 
   let $tweet = $('<article>').addClass('tweet').attr('data-id', id );
@@ -53,7 +30,7 @@ function createTweetElement(tweetObject) {
   ['flag', 'retweet', 'heart'].forEach((icon) => {
     $icons.append($('<i>').addClass('fa fa-' + icon).attr('aria-hidden', 'true'))
           .append($('<span>').addClass(icon + '-number number').attr('data-count', 0).text(0));
-  })
+  });
 
   let $footer = $('<footer>')
     .append($('<time>').addClass('timeago').attr('datetime', timestamp))
@@ -66,7 +43,7 @@ function createTweetElement(tweetObject) {
 
   $tweet.find('.heart-number').text(likeCount).attr('data-count', likeCount);
 
-  // add even handle to 'heart' icon to enable likes
+  // add even handler to 'heart' icon to enable likes
   $tweet.find('.fa-heart').on('click', handleLikeIncrementClicks);
 
   return $tweet;
@@ -86,9 +63,9 @@ function renderTweets(tweetArray) {
 
 /*
 Responsible for fetching tweets from database using jQuery to make a request to
-/tweet. Receives the array of tweets as JSON
+/tweet. Receives the array of tweets as JSON.
 */
-// TODO handle the error?
+// TODO handle the error better
 function loadTweets() {
   $.ajax({
     url: '/tweets',
@@ -96,18 +73,49 @@ function loadTweets() {
   }).done( function(allTweets) {
     renderTweets(allTweets);
   }).fail( function(err) {
-    console.log('Error:', err);
+    console.log('Error loading tweets:', err);
   });
+}
+
+/*
+Increments/decrements likes when a user clicks on the heart icon, and saves
+like status to database via ajax.
+*/
+function handleLikeIncrementClicks(event) {
+  const $tweetLikes = $(this).parents('.icons').children('.heart-number');
+  var tweetLikesNum = $tweetLikes.data('likes');
+  var tweetid = $(this).parents('article.tweet').data('id');
+  $.ajax({
+    url: `/tweets/${tweetid}/like`,
+    method: 'POST',
+    data: tweetLikesNum
+  }).done(function (res) {
+    if(res.isLiked) {
+      $tweetLikes.text(1).attr('data-count', 1);
+    } else {
+      $tweetLikes.text(0).attr('data-count', 0);
+    }
+  });
+}
+
+/*
+Shows/hides the new tweet form when 'compose' button is clicked. Also focuses
+cursor in textarea and scrolls user to top of page to view new tweet field.
+*/
+function toggleNewTweet() {
+  $('.new-tweet').slideToggle();
+  $('.new-tweet textarea').focus();
+  document.body.scrollTop = 0; // scrolls the window to the top
 }
 
 /*
 This runs once the html is loaded
 ================================================================================
 */
-// TODO handle the error in ajax post?
-$(document).ready(function() {
+// TODO handle the error in ajax post better
+// TODO move all event handlers to separate functions?
+$(document).ready( function() {
   loadTweets();
-  $('.new-tweet .invalid-tweet').hide();
 
   // new tweet submit actions
   $("form[action='/tweets/']").on('submit', function(event) {
@@ -125,7 +133,6 @@ $(document).ready(function() {
       return;
     }
 
-    $('.new-tweet .invalid-tweet').hide();
     $.ajax({
       url: '/tweets',
       method: 'POST',
@@ -139,5 +146,4 @@ $(document).ready(function() {
       console.log('Error:', err);
     });
   });
-
 });

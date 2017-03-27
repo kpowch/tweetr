@@ -10,7 +10,6 @@ $(document).ready(function() {
     const tweetLength = $(this).val().length; // length of current tweet string
     const charCount = maxLength - tweetLength;
 
-    // change value of counter by traversing the form instead of explicitly using the counter class
     $(this).parent().find('span.counter').text(charCount);
 
     // change color of counter to red if < 0

@@ -17,8 +17,8 @@ module.exports = function(DataHelpers) {
   });
 
   tweetsRoutes.post("/", function(req, res) {
-    if (!req.body.text) {
-      res.status(400).json({ error: 'invalid request: no data in POST body'});
+    if (req.body.text.length > 140 || req.body.text.length === 0) {
+      res.status(400).json({ error: 'invalid request: no data in POST body or past max char count'});
       return;
     }
 
@@ -41,21 +41,19 @@ module.exports = function(DataHelpers) {
     });
   });
 
-  // for liking tweets.
-  // TODO should this be put?
+  // for liking tweets
+  // TODO this should really be a put
   tweetsRoutes.post("/:id/like", function(req, res) {
     DataHelpers.toggleTweetLike(req.params.id, (err, tweet) => {
       if (err) {
         // TODO what is best status code?
         res.status(500).json({ error: err.message });
-        console.log('error in tweets.js');
+        console.log('error liking tweets');
       } else {
-        // TODO what do i do otherwise?
         res.status(201).send(tweet);
       }
     });
   });
 
   return tweetsRoutes;
-
-}
+};

@@ -33,7 +33,7 @@ module.exports = function makeDataHelpers(db) {
               db.collection('tweets').findOne({ _id: ObjectId(id) }, callback);
             }
           });
-      })
+      });
     }
   };
-}
+};
