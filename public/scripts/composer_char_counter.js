@@ -5,10 +5,10 @@ Calculates the number of characters for the tweet compose form
 // wait until html is loaded so js doesn't run until it has elements to act on
 $(document).ready(function() {
 
-  $('.new-tweet textarea').on('keyup', function() {
+  $('.new-tweet textarea').on('input', function() {
     const maxLength = 140; // max string length from requirements
-    let tweetLength = $(this).val().length; // length of current tweet string
-    let charCount = maxLength - tweetLength;
+    const tweetLength = $(this).val().length; // length of current tweet string
+    const charCount = maxLength - tweetLength;
 
     // change value of counter by traversing the form instead of explicitly using the counter class
     $(this).parent().find('span.counter').text(charCount);
