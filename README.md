@@ -1,6 +1,7 @@
 # Tweeter
 
 A single-page AJAX-based Twitter clone that uses jQuery, HTML5 and CSS3.
+Take a look at the deployed [heroku app!](https://desolate-citadel-65011.herokuapp.com/)(https://desolate-citadel-65011.herokuapp.com/)
 
 ## Getting Started
 
